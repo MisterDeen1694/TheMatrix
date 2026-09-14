@@ -1,10 +1,12 @@
 package me.brandondeen.thinmatrix.render;
 
+import org.lwjgl.opengl.GL11;
+
 import static org.lwjgl.opengl.GL46.*;
 
 public class Renderer {
     public void prepare() {
-        glClearColor(1, 0, 0, 1);
+        GL11.glClearColor(.1f,.1f,.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
     }
 
