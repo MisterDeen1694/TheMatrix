@@ -1,4 +1,4 @@
-package me.brandondeen.thinmatrix.render;
+package me.brandondeen.thinmatrix.models;
 
 public class RawModel {
 

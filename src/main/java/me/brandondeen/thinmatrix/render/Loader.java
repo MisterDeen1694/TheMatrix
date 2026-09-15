@@ -1,7 +1,10 @@
 package me.brandondeen.thinmatrix.render;
 
+import me.brandondeen.thinmatrix.models.RawModel;
+import me.brandondeen.thinmatrix.textures.Texture;
 import org.lwjgl.BufferUtils;
 
+import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -13,13 +16,28 @@ public class Loader {
 
     private List<Integer> vaos = new ArrayList<>();
     private List<Integer> vbos = new ArrayList<>();
+    private List<Integer> textures = new ArrayList<>();
 
-    public RawModel loadToVAO(float[] positions, int[] indices) {
+    public RawModel loadToVAO(float[] positions, float[] textureCoords, int[] indices) {
         int vaoID = createVAO();
         bindIndicesBuffer(indices);
-        storeDataInAttributeList(0, positions);
+        storeDataInAttributeList(0, 3, positions);
+        storeDataInAttributeList(1, 2, textureCoords);
         unbindVAO();
         return new RawModel(vaoID, indices.length);
+    }
+
+    public int loadTexture(String filename) {
+        Texture texture;
+        try {
+            texture = new Texture("src/main/resources/textures/" + filename + ".png");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        int textureID = texture.getTextureID();
+        textures.add(textureID);
+        return textureID;
     }
 
     private int createVAO() {
@@ -38,15 +56,19 @@ public class Loader {
             glDeleteBuffers(vbo);
         }
 
+        for (int texture : textures) {
+            glDeleteTextures(texture);
+        }
+
     }
 
-    private void storeDataInAttributeList(int attributeNumber, float[] data) {
+    private void storeDataInAttributeList(int attributeNumber, int coordinateSize ,float[] data) {
         int vboID = glGenBuffers();
         vbos.add(vboID);
         glBindBuffer(GL_ARRAY_BUFFER, vboID);
         FloatBuffer buffer = storeDataInFloatBuffer(data);
         glBufferData(GL_ARRAY_BUFFER, buffer, GL_STATIC_DRAW);
-        glVertexAttribPointer(attributeNumber, 3, GL_FLOAT, false, 0, 0);
+        glVertexAttribPointer(attributeNumber, coordinateSize, GL_FLOAT, false, 0, 0);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
