@@ -1,4 +1,4 @@
-package me.brandondeen.thinmatrix.shader;
+package me.brandondeen.thinmatrix.shaders;
 
 public class StaticShader extends ShaderProgram {
 

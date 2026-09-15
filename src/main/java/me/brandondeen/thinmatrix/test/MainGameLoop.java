@@ -5,7 +5,7 @@ import me.brandondeen.thinmatrix.render.Loader;
 import me.brandondeen.thinmatrix.models.RawModel;
 import me.brandondeen.thinmatrix.render.Renderer;
 import me.brandondeen.thinmatrix.render.WindowManager;
-import me.brandondeen.thinmatrix.shader.StaticShader;
+import me.brandondeen.thinmatrix.shaders.StaticShader;
 import me.brandondeen.thinmatrix.textures.ModelTexture;
 
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;

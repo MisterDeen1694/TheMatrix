@@ -1,11 +1,8 @@
-package me.brandondeen.thinmatrix.shader;
-
-import org.lwjgl.opengl.GL20;
+package me.brandondeen.thinmatrix.shaders;
 
 import static org.lwjgl.opengl.GL46.*;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
