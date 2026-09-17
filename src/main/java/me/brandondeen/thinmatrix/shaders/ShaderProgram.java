@@ -1,16 +1,23 @@
 package me.brandondeen.thinmatrix.shaders;
 
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
+import org.lwjgl.BufferUtils;
+
 import static org.lwjgl.opengl.GL46.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.FloatBuffer;
 
 public abstract class ShaderProgram {
 
     private int programID;
     private int vertexShaderID;
     private int fragmentShaderID;
+
+    private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 
     public ShaderProgram(String vertexFile, String fragmentFile) {
         vertexShaderID = loadShader(vertexFile, GL_VERTEX_SHADER);
@@ -21,6 +28,34 @@ public abstract class ShaderProgram {
         bindAttributes();
         glLinkProgram(programID);
         glValidateProgram(programID);
+        getAllUniformLocations();
+    }
+
+    protected abstract void getAllUniformLocations();
+
+    protected int getUniformLocation(String uniformName) {
+        return glGetUniformLocation(programID, uniformName);
+    }
+
+    protected void loadFloat(int location, float value) {
+        glUniform1f(location, value);
+    }
+
+    protected void loadVector(int location, Vector3f vector) {
+        glUniform3f(location, vector.x, vector.y, vector.z);
+    }
+
+    protected void loadBoolean(int location, boolean value) {
+        float toLoad = 0.0f;
+        if (value) {
+            toLoad = 1.0f;
+        }
+        glUniform1f(location, toLoad);
+    }
+
+    protected void loadMatrix(int location, Matrix4f matrix) {
+        matrix.get(matrixBuffer);
+        glUniformMatrix4fv(location, false, matrixBuffer);
     }
 
     public void start() {

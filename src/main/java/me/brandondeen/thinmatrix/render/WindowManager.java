@@ -1,5 +1,6 @@
 package me.brandondeen.thinmatrix.render;
 
+import me.brandondeen.thinmatrix.toolbox.Keyboard;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -47,11 +48,12 @@ public class WindowManager {
         }
 
         //Setup key callback
-        glfwSetKeyCallback(handle, (handle, key, scancode, action, mods) -> {
-            if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
-                glfwSetWindowShouldClose(handle, true);
-            }
-        });
+        glfwSetKeyCallback(handle, new Keyboard());
+//        glfwSetKeyCallback(handle, (handle, key, scancode, action, mods) -> {
+//            if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
+//                glfwSetWindowShouldClose(handle, true);
+//            }
+//        });
 
         try (MemoryStack stack = stackPush()) {
             IntBuffer pWidth = stack.mallocInt(1);
