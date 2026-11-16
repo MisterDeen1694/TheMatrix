@@ -4,6 +4,7 @@ import me.brandondeen.thinmatrix.entities.Entity;
 import me.brandondeen.thinmatrix.models.RawModel;
 import me.brandondeen.thinmatrix.models.TexturedModel;
 import me.brandondeen.thinmatrix.shaders.StaticShader;
+import me.brandondeen.thinmatrix.textures.ModelTexture;
 import me.brandondeen.thinmatrix.toolbox.Maths;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
@@ -19,6 +20,8 @@ public class Renderer {
     private Matrix4f projectionMatrix;
 
     public Renderer(StaticShader shader) {
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
         createProjectionMatrix();
         shader.start();
         shader.loadProjectionMatrix(projectionMatrix);
@@ -42,6 +45,9 @@ public class Renderer {
         Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotX(),
                 entity.getRotY(), entity.getRotZ(), entity.getScale());
         shader.loadTransformationMatrix(transformationMatrix);
+
+        ModelTexture texture = model.getTexture();
+        shader.loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, model.getTexture().getTextureID());
