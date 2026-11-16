@@ -4,11 +4,8 @@ import me.brandondeen.thinmatrix.entities.Camera;
 import me.brandondeen.thinmatrix.entities.Entity;
 import me.brandondeen.thinmatrix.entities.Light;
 import me.brandondeen.thinmatrix.models.TexturedModel;
-import me.brandondeen.thinmatrix.render.Loader;
+import me.brandondeen.thinmatrix.render.*;
 import me.brandondeen.thinmatrix.models.RawModel;
-import me.brandondeen.thinmatrix.render.OBJLoader;
-import me.brandondeen.thinmatrix.render.Renderer;
-import me.brandondeen.thinmatrix.render.WindowManager;
 import me.brandondeen.thinmatrix.shaders.StaticShader;
 import me.brandondeen.thinmatrix.textures.ModelTexture;
 import org.joml.Vector3f;
@@ -21,8 +18,6 @@ public class MainGameLoop {
         WindowManager.create();
 
         Loader loader = new Loader();
-        StaticShader shader = new StaticShader();
-        Renderer renderer = new Renderer(shader);
 
         RawModel model = OBJLoader.loadObjModel("dragon", loader);
 
@@ -35,19 +30,18 @@ public class MainGameLoop {
         Light light = new Light(new Vector3f(0,0, -20), new Vector3f(1, 1, 1));
 
         Camera camera = new Camera();
+
+        MasterRenderer renderer = new MasterRenderer();
         while (!glfwWindowShouldClose(WindowManager.getHandle())) {
             entity.increaseRotation(0f, .1f, 0f);
             camera.move();
-            renderer.prepare();
-            shader.start();
-            shader.loadLight(light);
-            shader.loadViewMatrix(camera);
-            renderer.render(entity, shader);
-            shader.stop();
+
+            renderer.processEntity(entity);
+
+            renderer.render(light, camera);
             WindowManager.update();
         }
-
-        shader.cleanUp();
+        renderer.cleanUp();
         loader.cleanUp();
         WindowManager.close();
     }
