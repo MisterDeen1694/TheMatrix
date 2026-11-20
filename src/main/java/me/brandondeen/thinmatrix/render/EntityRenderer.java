@@ -7,36 +7,21 @@ import me.brandondeen.thinmatrix.shaders.StaticShader;
 import me.brandondeen.thinmatrix.textures.ModelTexture;
 import me.brandondeen.thinmatrix.toolbox.Maths;
 import org.joml.Matrix4f;
-import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 import java.util.Map;
 
 import static org.lwjgl.opengl.GL46.*;
 
-public class Renderer {
+public class EntityRenderer {
 
-    private static final float FOV = 70;
-    private static final float NEAR_PLANE = 0.1f;
-    private static final float FAR_PLANE = 1000f;
-
-    private Matrix4f projectionMatrix;
     private StaticShader shader;
 
-    public Renderer(StaticShader shader) {
+    public EntityRenderer(StaticShader shader, Matrix4f projectionMatrix) {
         this.shader = shader;
-        glEnable(GL_CULL_FACE);
-        glCullFace(GL_BACK);
-        createProjectionMatrix();
         shader.start();
         shader.loadProjectionMatrix(projectionMatrix);
         shader.stop();
-    }
-
-    public void prepare() {
-        glEnable(GL_DEPTH_TEST);
-        GL11.glClearColor(.1f,.1f,.1f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     }
 
     public void render(Map<TexturedModel, List<Entity>> entities) {
@@ -77,7 +62,4 @@ public class Renderer {
         shader.loadTransformationMatrix(transformationMatrix);
     }
 
-    private void createProjectionMatrix() {
-        projectionMatrix = new Matrix4f().perspective((float) Math.toRadians(FOV), (float) WindowManager.getWidth() / (float) WindowManager.getHeight(), NEAR_PLANE, FAR_PLANE);
-    }
 }

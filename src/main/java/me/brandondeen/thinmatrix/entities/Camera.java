@@ -6,7 +6,7 @@ import org.joml.Vector3f;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class Camera {
-    private Vector3f position = new Vector3f(0f,0f,0f);
+    private Vector3f position = new Vector3f(0f,1f,0f);
     private float pitch;
     private float yaw;
     private float roll;
@@ -23,6 +23,12 @@ public class Camera {
         }
         if (Keyboard.isKeyDown(GLFW_KEY_D)) {
             position.x += .02f;
+        }
+        if (Keyboard.isKeyDown(GLFW_KEY_SPACE)) {
+            position.y += .02f;
+        }
+        if (Keyboard.isKeyDown(GLFW_KEY_LEFT_SHIFT)) {
+            position.y -= .02f;
         }
     }
 

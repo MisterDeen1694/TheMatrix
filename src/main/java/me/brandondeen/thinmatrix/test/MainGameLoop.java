@@ -7,6 +7,7 @@ import me.brandondeen.thinmatrix.models.TexturedModel;
 import me.brandondeen.thinmatrix.render.*;
 import me.brandondeen.thinmatrix.models.RawModel;
 import me.brandondeen.thinmatrix.shaders.StaticShader;
+import me.brandondeen.thinmatrix.terrains.Terrain;
 import me.brandondeen.thinmatrix.textures.ModelTexture;
 import org.joml.Vector3f;
 
@@ -29,6 +30,9 @@ public class MainGameLoop {
         Entity entity = new Entity(staticModel, new Vector3f(0, 0, -25), 0, 0, 0, 1);
         Light light = new Light(new Vector3f(0,0, -20), new Vector3f(1, 1, 1));
 
+        Terrain terrain = new Terrain(0, -1, loader, new ModelTexture(loader.loadTexture("starbo")));
+        Terrain terrain2 = new Terrain(1, 0, loader, new ModelTexture(loader.loadTexture("starbo ")));
+
         Camera camera = new Camera();
 
         MasterRenderer renderer = new MasterRenderer();
@@ -36,6 +40,8 @@ public class MainGameLoop {
             entity.increaseRotation(0f, .1f, 0f);
             camera.move();
 
+            renderer.processTerrain(terrain);
+            renderer.processTerrain(terrain2);
             renderer.processEntity(entity);
 
             renderer.render(light, camera);
