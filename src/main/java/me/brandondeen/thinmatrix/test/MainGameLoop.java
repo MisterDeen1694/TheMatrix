@@ -20,18 +20,20 @@ public class MainGameLoop {
 
         Loader loader = new Loader();
 
-        RawModel model = OBJLoader.loadObjModel("dragon", loader);
+        RawModel model = OBJLoader.loadObjModel("fern", loader);
 
-        TexturedModel staticModel = new TexturedModel(model, new ModelTexture(loader.loadTexture("pink")));
+        TexturedModel staticModel = new TexturedModel(model, new ModelTexture(loader.loadTexture("fern")));
+        staticModel.getTexture().setHasTransparency(true);
+        staticModel.getTexture().setUseFakeLighting(true);
         ModelTexture texture = staticModel.getTexture();
         texture.setShineDamper(10);
         texture.setReflectivity(1);
 
-        Entity entity = new Entity(staticModel, new Vector3f(0, 0, -25), 0, 0, 0, 1);
+        Entity entity = new Entity(staticModel, new Vector3f(0, 0, -10), 0, 0, 0, 1);
         Light light = new Light(new Vector3f(0,0, -20), new Vector3f(1, 1, 1));
 
         Terrain terrain = new Terrain(0, -1, loader, new ModelTexture(loader.loadTexture("starbo")));
-        Terrain terrain2 = new Terrain(1, 0, loader, new ModelTexture(loader.loadTexture("starbo ")));
+        Terrain terrain2 = new Terrain(1, 0, loader, new ModelTexture(loader.loadTexture("starbo")));
 
         Camera camera = new Camera();
 
