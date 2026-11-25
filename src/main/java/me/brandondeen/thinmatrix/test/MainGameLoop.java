@@ -13,6 +13,10 @@ import me.brandondeen.thinmatrix.terrains.Terrain;
 import me.brandondeen.thinmatrix.textures.ModelTexture;
 import org.joml.Vector3f;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 
 
@@ -29,27 +33,31 @@ public class MainGameLoop {
 
         TexturedModel staticModel = new TexturedModel(model, new ModelTexture(loader.loadTexture("fern")));
         staticModel.getTexture().setHasTransparency(true);
-        staticModel.getTexture().setUseFakeLighting(true);
-        ModelTexture texture = staticModel.getTexture();
-        texture.setShineDamper(10);
-        texture.setReflectivity(1);
 
-        Entity entity = new Entity(staticModel, new Vector3f(0, 0, -10), 0, 0, 0, 1);
-        Light light = new Light(new Vector3f(0,0, -20), new Vector3f(1, 1, 1));
+        List<Entity> entities = new ArrayList<Entity>();
+        Random random = new Random();
+        for(int i=0;i<500;i++){
+            entities.add(new Entity(staticModel, new Vector3f(random.nextFloat()*800 - 400,0,random.nextFloat() * -600),0,0,0,3));
+        }
 
-        Terrain terrain = new Terrain(0, -1, loader, new ModelTexture(loader.loadTexture("starbo")));
-        Terrain terrain2 = new Terrain(1, 0, loader, new ModelTexture(loader.loadTexture("starbo")));
+        Light light = new Light(new Vector3f(20000,20000,2000),new Vector3f(1,1,1));
+
+        Terrain terrain = new Terrain(0,-1,loader,new ModelTexture(loader.loadTexture("grass")));
+        Terrain terrain2 = new Terrain(-1,-1,loader,new ModelTexture(loader.loadTexture("grass")));
+
 
         Camera camera = new Camera();
 
         MasterRenderer renderer = new MasterRenderer();
         while (!glfwWindowShouldClose(WindowManager.getHandle())) {
-            entity.increaseRotation(0f, .1f, 0f);
             camera.move();
 
             renderer.processTerrain(terrain);
             renderer.processTerrain(terrain2);
-            renderer.processEntity(entity);
+
+            for(Entity entity:entities){
+                renderer.processEntity(entity);
+            }
 
             renderer.render(light, camera);
             WindowManager.update();
