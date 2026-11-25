@@ -24,6 +24,11 @@ public class MasterRenderer {
     private static final float FOV = 70;
     private static final float NEAR_PLANE = 0.1f;
     private static final float FAR_PLANE = 1000f;
+
+    private static final float RED = 0.90f;
+    private static final float GREEN = 0.61f;
+    private static final float BLUE = 0.72f;
+
     private Matrix4f projectionMatrix;
 
     private StaticShader shader = new StaticShader();
@@ -55,6 +60,7 @@ public class MasterRenderer {
     public void render(Light sun, Camera camera) {
         prepare();
         shader.start();
+        shader.loadSkyColour(RED, GREEN, BLUE);
         shader.loadLight(sun);
         shader.loadViewMatrix(camera);
 
@@ -63,6 +69,7 @@ public class MasterRenderer {
         shader.stop();
 
         terrainShader.start();
+        terrainShader.loadSkyColour(RED, GREEN, BLUE);
         terrainShader.loadLight(sun);
         terrainShader.loadViewMatrix(camera);
         terrainRenderer.render(terrains);
@@ -95,8 +102,8 @@ public class MasterRenderer {
 
     public void prepare() {
         glEnable(GL_DEPTH_TEST);
-        GL11.glClearColor(.1f,.1f,.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+        glClearColor(RED, GREEN, BLUE, 1.0f);
     }
 
     private void createProjectionMatrix() {

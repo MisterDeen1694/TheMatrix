@@ -4,6 +4,7 @@ import me.brandondeen.thinmatrix.entities.Camera;
 import me.brandondeen.thinmatrix.entities.Light;
 import me.brandondeen.thinmatrix.toolbox.Maths;
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 public class TerrainShader extends ShaderProgram {
     private static final String VERTEX_FILE = "src/main/resources/shaders/terrainVertexShader.glsl";
@@ -16,6 +17,7 @@ public class TerrainShader extends ShaderProgram {
     private int location_lightColour;
     private int location_shineDamper;
     private int location_reflectivity;
+    private int location_skyColour;
 
     public TerrainShader() {
         super(VERTEX_FILE, FRAGMENT_FILE);
@@ -37,7 +39,11 @@ public class TerrainShader extends ShaderProgram {
         location_lightColour = super.getUniformLocation("lightColour");
         location_shineDamper = super.getUniformLocation("shineDamper");
         location_reflectivity = super.getUniformLocation("reflectivity");
+        location_skyColour = super.getUniformLocation("skyColour");
+    }
 
+    public void loadSkyColour(float red, float green, float blue) {
+        super.loadVector(location_skyColour, new Vector3f(red, green, blue));
     }
 
     public void loadShineVariables(float damper, float reflectivity) {
