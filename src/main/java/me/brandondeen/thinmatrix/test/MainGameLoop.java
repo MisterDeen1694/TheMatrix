@@ -4,6 +4,8 @@ import me.brandondeen.thinmatrix.entities.Camera;
 import me.brandondeen.thinmatrix.entities.Entity;
 import me.brandondeen.thinmatrix.entities.Light;
 import me.brandondeen.thinmatrix.models.TexturedModel;
+import me.brandondeen.thinmatrix.objectConverter.ModelData;
+import me.brandondeen.thinmatrix.objectConverter.ObjectFileLoader;
 import me.brandondeen.thinmatrix.render.*;
 import me.brandondeen.thinmatrix.models.RawModel;
 import me.brandondeen.thinmatrix.shaders.StaticShader;
@@ -20,7 +22,10 @@ public class MainGameLoop {
 
         Loader loader = new Loader();
 
-        RawModel model = OBJLoader.loadObjModel("fern", loader);
+//        RawModel model = OBJLoader.loadObjModel("fern", loader);
+
+        ModelData fernModelData = ObjectFileLoader.loadOBJ("fern");
+        RawModel model = loader.loadToVAO(fernModelData);
 
         TexturedModel staticModel = new TexturedModel(model, new ModelTexture(loader.loadTexture("fern")));
         staticModel.getTexture().setHasTransparency(true);

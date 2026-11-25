@@ -1,6 +1,7 @@
 package me.brandondeen.thinmatrix.render;
 
 import me.brandondeen.thinmatrix.models.RawModel;
+import me.brandondeen.thinmatrix.objectConverter.ModelData;
 import me.brandondeen.thinmatrix.textures.Texture;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -18,6 +19,11 @@ public class Loader {
     private List<Integer> vaos = new ArrayList<>();
     private List<Integer> vbos = new ArrayList<>();
     private List<Integer> textures = new ArrayList<>();
+
+    public RawModel loadToVAO(ModelData modelData) {
+        return loadToVAO(modelData.getVertices(), modelData.getTextureCords(),
+                modelData.getNormals(), modelData.getIndices());
+    }
 
     public RawModel loadToVAO(float[] positions, float[] textureCoords, float[] normals, int[] indices) {
         int vaoID = createVAO();
