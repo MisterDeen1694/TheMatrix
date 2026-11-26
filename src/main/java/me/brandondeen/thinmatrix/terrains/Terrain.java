@@ -2,7 +2,8 @@ package me.brandondeen.thinmatrix.terrains;
 
 import me.brandondeen.thinmatrix.models.RawModel;
 import me.brandondeen.thinmatrix.render.Loader;
-import me.brandondeen.thinmatrix.textures.ModelTexture;
+import me.brandondeen.thinmatrix.textures.TerrainTexture;
+import me.brandondeen.thinmatrix.textures.TerrainTexturePack;
 
 public class Terrain {
     private static final float SIZE = 800;
@@ -11,17 +12,23 @@ public class Terrain {
     private float x;
     private float z;
     private RawModel model;
-    private ModelTexture texture;
+    private TerrainTexturePack texturePack;
+    private TerrainTexture blendMap;
 
-    public Terrain(int gridX, int gridZ, Loader loader, ModelTexture texture) {
-        this.texture = texture;
+    public Terrain(int gridX, int gridZ, Loader loader, TerrainTexturePack texturePack, TerrainTexture blendMap) {
+        this.texturePack = texturePack;
+        this.blendMap = blendMap;
         this.x = gridX * SIZE;
         this.z = gridZ * SIZE;
         this.model = generateTerrain(loader);
     }
 
-    public ModelTexture getTexture() {
-        return texture;
+    public TerrainTexturePack getTexturePack() {
+        return texturePack;
+    }
+
+    public TerrainTexture getBlendMap() {
+        return blendMap;
     }
 
     public RawModel getModel() {
@@ -73,5 +80,6 @@ public class Terrain {
         }
         return loader.loadToVAO(vertices, textureCoords, normals, indices);
     }
+
 
 }

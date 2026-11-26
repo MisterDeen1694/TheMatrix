@@ -11,6 +11,8 @@ import me.brandondeen.thinmatrix.models.RawModel;
 import me.brandondeen.thinmatrix.shaders.StaticShader;
 import me.brandondeen.thinmatrix.terrains.Terrain;
 import me.brandondeen.thinmatrix.textures.ModelTexture;
+import me.brandondeen.thinmatrix.textures.TerrainTexture;
+import me.brandondeen.thinmatrix.textures.TerrainTexturePack;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
@@ -26,7 +28,15 @@ public class MainGameLoop {
 
         Loader loader = new Loader();
 
-//        RawModel model = OBJLoader.loadObjModel("fern", loader);
+        // Terrain Texture
+        TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("grassy2"));
+        TerrainTexture redTexture = new TerrainTexture(loader.loadTexture("mud"));
+        TerrainTexture greenTexture = new TerrainTexture(loader.loadTexture("grassFlowers"));
+        TerrainTexture blueTexture = new TerrainTexture(loader.loadTexture("path"));
+
+        TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, redTexture, greenTexture, blueTexture);
+        TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap"));
+        // ****
 
         ModelData fernModelData = ObjectFileLoader.loadOBJ("fern");
         RawModel model = loader.loadToVAO(fernModelData);
@@ -42,8 +52,8 @@ public class MainGameLoop {
 
         Light light = new Light(new Vector3f(20000,20000,2000),new Vector3f(1,1,1));
 
-        Terrain terrain = new Terrain(0,-1,loader,new ModelTexture(loader.loadTexture("grass")));
-        Terrain terrain2 = new Terrain(-1,-1,loader,new ModelTexture(loader.loadTexture("grass")));
+        Terrain terrain = new Terrain(0,-1,loader, texturePack, blendMap);
+        Terrain terrain2 = new Terrain(-1,-1,loader, texturePack, blendMap);
 
 
         Camera camera = new Camera();
